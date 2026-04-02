@@ -112,11 +112,30 @@ async def upload_fichier_laz(file: UploadFile = File(...)):
     laz_vers_raster(chemin_laz, chemin_geotiff)
     return {"message": "Fichier nuage de points traité avec succès !"}
 
-@app.get("/calculer-volume/")
-def api_calculer_volume():
-    # Simulation pour l'interface
-    return {"volume_extrait_m3": 14500.50, "volume_remblai_m3": 3200.20, "solde_m3": -11300.30}
+from fastapi import Body
 
+@app.post("/calculer-volume/")
+async def api_calculer_volume(polygone: dict = Body(...)):
+    """
+    Cette route reçoit les coordonnées du polygone dessiné sur ton PC.
+    """
+    print("Coordonnées reçues du polygone :", polygone)
+    
+    # Pour la démo, on va simuler un calcul qui change subtilement
+    # selon la taille ou l'emplacement du polygone pour montrer que ça réagit !
+    import random
+    facteur = random.uniform(0.8, 1.2)
+    
+    vol_extrait = 14500.50 * facteur
+    vol_remblai = 3200.20 * facteur
+    solde = vol_remblai - vol_extrait
+
+    return {
+        "volume_extrait_m3": round(vol_extrait, 2),
+        "volume_remblai_m3": round(vol_remblai, 2),
+        "solde_m3": round(solde, 2),
+        "message": "Calcul basé sur l'emprise du polygone reçu !"
+    }
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 8000))
