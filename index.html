@@ -64,7 +64,7 @@
 
     // Appel au serveur Python
     function calculerVolumes() {
-        fetch('http://127.0.0.1:8000/calculer-volume/')
+        fetch('https://cubage-graviere.onrender.com/calculer-volume/')
             .then(res => res.json())
             .then(data => {
                 document.getElementById('volExtrait').innerText = data.volume_extrait_m3.toFixed(2) + " m³";

@@ -65,3 +65,9 @@ if __name__ == "__main__":
     # Render donne un port automatique via la variable d'environnement PORT
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
+from fastapi.responses import HTMLResponse
+
+@app.get("/", response_class=HTMLResponse)
+def lire_index():
+    with open("index.html", "r", encoding="utf-8") as f:
+        return f.read()
