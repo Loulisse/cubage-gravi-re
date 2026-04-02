@@ -6,3 +6,5 @@ rasterio
 numpy
 openpyxl
 python-docx
+ezdxf
+Pillow
